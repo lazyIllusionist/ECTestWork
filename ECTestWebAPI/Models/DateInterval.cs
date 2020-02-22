@@ -7,7 +7,7 @@ namespace ECTestWebAPI.Models
 {
     public class DateInterval
     {
-        DateTime StartDate { get; set; }
-        DateTime EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

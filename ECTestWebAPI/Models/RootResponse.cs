@@ -7,5 +7,7 @@ namespace ECTestWebAPI.Models
 {
     public class RootResponse
     {
+        public int ID { get; set; }
+        public double Number { get; set; }
     }
 }
