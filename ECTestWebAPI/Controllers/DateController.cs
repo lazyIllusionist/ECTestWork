@@ -6,6 +6,7 @@ using ECTestWebAPI.Models;
 using ECTestWebAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ECTestWebAPI.Controllers
 {
@@ -13,12 +14,14 @@ namespace ECTestWebAPI.Controllers
     [ApiController]
     public class DateController : ControllerBase
     {
-        IDateService _service;
-        IValidationService _validator;
-        public DateController(IDateService service, IValidationService validator)
+        readonly IDateService _service;
+        readonly IValidationService _validator;
+        readonly ILogger _logger;
+        public DateController(IDateService service, IValidationService validator, ILogger<DateController> logger)
         {
             _service = service;
             _validator = validator;
+            _logger = logger;
         }
 
         [HttpPut(Name = nameof(GetInnerDates))]
@@ -29,18 +32,22 @@ namespace ECTestWebAPI.Controllers
                 if (await _validator.ValidateAsync(form))
                     return Ok(await _service.GetIntervalsAsync(form));
             }
-            catch(ArgumentException e) { }
+            catch(ArgumentException e) { _logger.LogError(e.Message); }
             return new BadRequestResult();
         }
 
         [HttpPost(Name = nameof(AddDateInterval))]
         public async Task<IActionResult> AddDateInterval([FromBody] DateIntervalForm form)
         {
-           if (await _validator.ValidateAsync(form))
+            try
             {
-                await _service.AddDateIntervalAsync(form);
-                return new CreatedResult("Location", form);
+                if (await _validator.ValidateAsync(form))
+                {
+                    await _service.AddDateIntervalAsync(form);
+                    return new CreatedResult("Location", form);
+                }
             }
+            catch (ArgumentException e) { _logger.LogError(e.Message); }
             return new BadRequestResult();
         }
     }

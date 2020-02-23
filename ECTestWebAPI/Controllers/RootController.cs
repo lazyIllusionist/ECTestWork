@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ECTestWebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ECTestWebAPI.Controllers
 {
@@ -15,9 +16,8 @@ namespace ECTestWebAPI.Controllers
         [HttpGet(Name = nameof(GetRoot))]
         public IActionResult GetRoot()
         {
-            var response = new RootResponse();
-
-            return Ok("work"); //TODO: make it normal
+            var response = "work !";
+            return Ok(response); //TODO: make it normal
         }
     }
 }

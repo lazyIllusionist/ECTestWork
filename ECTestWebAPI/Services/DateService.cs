@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ECTestWebAPI.Services
 {
     public class DateService : IDateService
     {
-        DateApiDbContext _dbContext;
+        readonly DateApiDbContext _dbContext;
         public DateService(DateApiDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -73,7 +74,7 @@ namespace ECTestWebAPI.Services
         public IEnumerable<DateInterval> GetIntervals(DateTime startDate, DateTime endDate)
         {
             return _dbContext.DateIntervals.Where(x => 
-            !(x.StartDate.CompareTo(endDate) > 0 && x.EndDate.CompareTo(startDate) < 0)) 
+            !(x.StartDate.CompareTo(endDate) > 0 || x.EndDate.CompareTo(startDate) < 0)) 
                 .Select(x => new DateInterval
             {
                 StartDate = x.StartDate,
@@ -89,15 +90,6 @@ namespace ECTestWebAPI.Services
         public async Task<IEnumerable<DateInterval>> GetIntervalsAsync(DateTime startDate, DateTime endDate)
         {
             return await Task<IEnumerable<DateInterval>>.Run(() => GetIntervals(startDate, endDate));
-        }
-
-        private DateInterval Mapper(DateIntervalEntity dateInterval)
-        {
-            return new DateInterval
-            {
-                StartDate = dateInterval.StartDate,
-                EndDate = dateInterval.EndDate
-            };
         }
     }
 }
