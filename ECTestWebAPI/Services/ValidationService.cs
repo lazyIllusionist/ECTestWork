@@ -19,9 +19,9 @@ namespace ECTestWebAPI.Services
 
             if (form.StartYear > form.EndYear)
                 throw new ArgumentException("Error in years");
-            if (!(form.StartYear > form.EndYear) && form.StartMonth > form.EndMonth)
+            if (form.StartYear == form.EndYear && form.StartMonth > form.EndMonth)
                 throw new ArgumentException("Error in months");
-            if(!(form.StartYear > form.EndYear) && !(form.StartMonth > form.EndMonth) && form.StartDay > form.EndDay)
+            if(form.StartYear == form.EndYear && form.StartMonth == form.EndMonth && form.StartDay > form.EndDay)
                 throw new ArgumentException("Error in days");
 
             return true;

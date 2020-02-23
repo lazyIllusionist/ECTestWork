@@ -22,7 +22,7 @@ namespace ECTestWebAPI.Controllers
         }
 
         [HttpPut(Name = nameof(GetInnerDates))]
-        public async Task<ActionResult<IEnumerable<DateInterval>>> GetInnerDates([FromForm] DateIntervalForm form)
+        public async Task<ActionResult<IEnumerable<DateInterval>>> GetInnerDates([FromBody] DateIntervalForm form)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace ECTestWebAPI.Controllers
         }
 
         [HttpPost(Name = nameof(AddDateInterval))]
-        public async Task<IActionResult> AddDateInterval([FromForm] DateIntervalForm form)
+        public async Task<IActionResult> AddDateInterval([FromBody] DateIntervalForm form)
         {
            if (await _validator.ValidateAsync(form))
             {

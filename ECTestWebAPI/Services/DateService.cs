@@ -72,7 +72,8 @@ namespace ECTestWebAPI.Services
 
         public IEnumerable<DateInterval> GetIntervals(DateTime startDate, DateTime endDate)
         {
-            return _dbContext.DateIntervals.Where(x => x.StartDate.CompareTo(startDate) >= 0 && x.EndDate.CompareTo(endDate) <= 0)
+            return _dbContext.DateIntervals.Where(x => 
+            !(x.StartDate.CompareTo(endDate) > 0 && x.EndDate.CompareTo(startDate) < 0)) 
                 .Select(x => new DateInterval
             {
                 StartDate = x.StartDate,
